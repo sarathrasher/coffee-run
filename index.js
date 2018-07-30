@@ -1,32 +1,47 @@
 var orderForm = document.querySelector('[data-coffee-order="form"]');
 var orderList = document.querySelector(".order-list");
+var checkbox = document.createElement('input');
+checkbox.setAttribute('type', 'checkbox');
+var orders = [];
 
 var submit = function (event) {
     event.preventDefault();
 
-    var coffeeOrder = document.getElementsByName('coffee');
-    var email = document.getElementsByName('emailAddress');
+    var coffeeOrder = document.querySelector('[name="coffee"]');
+    var email = document.querySelector('[name="emailAddress"]');
     var size = document.querySelector('[name="size"]:checked');
-    var flavor = document.getElementsByName('flavor');
-    var strength = document.getElementsByName('strength')
+    var flavor = document.querySelector('[name="flavor"]');
+    var strength = document.querySelector('[name="strength"]')
 
-    printOrder(coffeeOrder, email, size, flavor, strength);
-    
+    var orderObject = { coffeeOrder: coffeeOrder.value, email: email.value, size: size.value, flavor: flavor.value, strength: strength.value};
+
+    orders.push(orderObject);
+
+    printOrder(orderObject); 
+
+    localStorage.setItem("coffeeOrders", JSON.stringify(orders));
 }
 
-var printOrder = function (coffeeOrder, email, size, flavor, strength) {
+var printOrder = function (order) {
     var orderListItem = document.createElement('li')
-    var checkbox = document.createElement('input');
-    checkbox.setAttribute('type', 'checkbox');
-    orderListItem.appendChild(checkbox);
-    orderListItem.textContent = `${coffeeOrder[0].value}, ${email[0].value}, ${size.value}, ${flavor[0].value}, ${strength[0].value}`
+    orderListItem.classList.add('order')
 
-    
+    orderStatement = `${order.coffeeOrder}, ${order.email}, ${order.size}, ${order.flavor}, ${order.strength}`
+
+    orderListItem.textContent = orderStatement
+
+    orderListItem.appendChild(checkbox);
     orderList.appendChild(orderListItem);
+
+    var removeOrder = function (event) {
+        orderList.removeChild(orderListItem)
+    };
+
+    checkbox.addEventListener('click', removeOrder);
 };
 
-
+orders.forEach(function(order) {printOrder(order)});
 
 orderForm.addEventListener('submit', submit);
-checkbox.addEventListener('click', removeOrder);
+
 
