@@ -19,15 +19,17 @@ var deleteByValue = function (value) {
 };
 
 var printOrder = function (order) {
-    var orderStatement = `${order.coffeeOrder}, ${order.email}, ${order.size}, ${order.flavor}, ${order.strength}`
+    var orderText = `${order.coffeeOrder}, ${order.email}, ${order.size}, ${order.flavor}, ${order.strength}`
 
     var orderListItem = document.createElement('li')
     orderListItem.classList.add('order')
-    orderListItem.textContent = orderStatement
+    var orderStatement = document.createElement('p')
+    orderStatement.textContent = orderText
 
     var checkbox = document.createElement('input');
     checkbox.setAttribute('type', 'checkbox');
 
+    orderListItem.appendChild(orderStatement);
     orderListItem.appendChild(checkbox);
     orderList.appendChild(orderListItem);
 
