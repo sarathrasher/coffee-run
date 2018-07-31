@@ -60,8 +60,25 @@ var submit = function (event) {
 };
 
 orders = JSON.parse(localStorage.getItem('coffeeOrders'))
-orders.forEach(function(order) {printOrder(order)});
+if (orders !== null) {
+    orders.forEach(function(order) {printOrder(order)});
+} else if (orders === null) {
+    orders = [];
+}
 
 orderForm.addEventListener('submit', submit);
 
+// $.ajax('https://dc-coffeerun.herokuapp.com/api/coffeeorders', {
+//     success: function(coffeeOrders) {
+//         console.log(coffeeOrders);
+//     },
+//     error: function() {
+//         console.log('boom!');
+//     }
+// })
+
+// method: 'POST', 
+// data: { emailAddress: '',
+//         coffee: '',
+//     }
 
