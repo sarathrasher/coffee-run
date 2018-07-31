@@ -3,7 +3,7 @@ var orderList = document.querySelector(".order-list");
 
 var orders = [];
 
-var setLocalStorage = function (order) {
+var setLocalStorage = function () {
     localStorage.setItem("coffeeOrders", JSON.stringify(orders));
 };
 
@@ -15,10 +15,11 @@ var deleteByValue = function (value) {
         }
     }
     orders = newOrderList;
+    setLocalStorage();
 };
 
 var printOrder = function (order) {
-    orderStatement = `${order.coffeeOrder}, ${order.email}, ${order.size}, ${order.flavor}, ${order.strength}`
+    var orderStatement = `${order.coffeeOrder}, ${order.email}, ${order.size}, ${order.flavor}, ${order.strength}`
 
     var orderListItem = document.createElement('li')
     orderListItem.classList.add('order')
@@ -35,7 +36,6 @@ var printOrder = function (order) {
         deleteByValue(order)
     };
 
-    setLocalStorage(orders);
     checkbox.addEventListener('click', removeOrder);
 };
 
@@ -55,10 +55,10 @@ var submit = function (event) {
     printOrder(orderObject); 
 
     setLocalStorage(orders);
-}
+};
 
-    JSON.parse(localStorage.getItem('coffeeOrders')).forEach(function(order) {printOrder(order)});
-
+orders = JSON.parse(localStorage.getItem('coffeeOrders'))
+orders.forEach(function(order) {printOrder(order)});
 
 orderForm.addEventListener('submit', submit);
 
