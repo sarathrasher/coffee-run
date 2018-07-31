@@ -8,11 +8,13 @@ var setLocalStorage = function (order) {
 };
 
 var deleteByValue = function (value) {
+    var newOrderList = []
     for (var i = 0; i < orders.length; i++) {
-        if (orders[i] === value) {
-            orders.splice(orders[i]);
-        };
-    };
+        if (orders[i] !== value) {
+            newOrderList.push(orders[i]);
+        }
+    }
+    orders = newOrderList;
 };
 
 var printOrder = function (order) {
@@ -31,7 +33,6 @@ var printOrder = function (order) {
     var removeOrder = function (event) {
         orderList.removeChild(orderListItem)
         deleteByValue(order)
-        setLocalStorage(orders);
     };
 
     setLocalStorage(orders);
