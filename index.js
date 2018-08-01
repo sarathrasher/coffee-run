@@ -22,7 +22,7 @@ var printOrder = function (order) {
 
     var removeOrder = function (event) {
         orderList.removeChild(orderListItem)
-        deleteByValue(order)
+        deleteOrder(order)
     };
 
     checkbox.addEventListener('click', removeOrder);
@@ -45,7 +45,19 @@ var getData = function () {
 var post = function (orderObject) {
     $.ajax(url, {
         method: 'POST',
-        data: { orderObject },
+        data: orderObject ,
+        success: function(orderObject) {
+            getData();
+        },
+        })
+};
+
+var deleteOrder = function (order) {
+    var emailAddress = order.emailAddress;
+    var url = `https://dc-coffeerun.herokuapp.com/api/coffeeorders/${emailAddress}`
+    $.ajax(url, {
+        method: 'DELETE',
+        data: order,
         success: getData()
         })
 };
@@ -70,10 +82,10 @@ var submit = function (event) {
     var flavor = document.querySelector('[name="flavor"]');
     var strength = document.querySelector('[name="strength"]')
 
-    var orderObject = {coffee: coffee.value, email: email.value, size: size.value, flavor: flavor.value, strength: strength.value};
+    var orderObject = {coffee: coffee.value, emailAddress: email.value, size: size.value, flavor: flavor.value, strength: strength.value};
 
     orders.push(orderObject);
-    
+
     post(orderObject);
 };
 
