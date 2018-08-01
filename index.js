@@ -21,7 +21,8 @@ var printOrder = function (order) {
     orderList.appendChild(orderListItem);
 
     var removeOrder = function (event) {
-        orderList.removeChild(orderListItem)
+        orderListItem.classList.add('green');
+        setTimeout(function () {orderList.removeChild(orderListItem)}, 2000);
         deleteOrder(order)
     };
 
@@ -35,11 +36,8 @@ var getData = function () {
             Object.values(coffeeOrders).forEach(function(order) {
                 printOrder(order);
             });
-            console.log(Object.values(coffeeOrders));
-        },
-        error: function() {
-            console.log('boom!');
         }
+
     })
 };
 
@@ -59,9 +57,8 @@ var deleteOrder = function (order) {
     $.ajax(url, {
         method: 'DELETE',
         success: function(orderObject) {
-            console.log(order);
         }
-});
+    });
 };
 
 var deleteByValue = function (value) {
