@@ -28,11 +28,12 @@ var printOrder = function (order) {
     checkbox.addEventListener('click', removeOrder);
 };
 
+
 var getData = function () {
     $.ajax(url, {
         success: function(coffeeOrders) {
             Object.values(coffeeOrders).forEach(function(order) {
-                printOrder(order)
+                printOrder(order);
             });
             console.log(Object.values(coffeeOrders));
         },
@@ -45,9 +46,9 @@ var getData = function () {
 var post = function (orderObject) {
     $.ajax(url, {
         method: 'POST',
-        data: orderObject ,
-        success: function(orderObject) {
-            getData();
+        data: orderObject,
+        success: function() {
+            printOrder(orderObject);
         },
         })
 };
@@ -57,9 +58,10 @@ var deleteOrder = function (order) {
     var url = `https://dc-coffeerun.herokuapp.com/api/coffeeorders/${emailAddress}`
     $.ajax(url, {
         method: 'DELETE',
-        data: order,
-        success: getData()
-        })
+        success: function(orderObject) {
+            console.log(order);
+        }
+});
 };
 
 var deleteByValue = function (value) {
@@ -70,26 +72,21 @@ var deleteByValue = function (value) {
         }
     }
     orders = newOrderList;
-    getData();
 };
 
 var submit = function (event) {
     event.preventDefault();
 
     var coffee = document.querySelector('[name="coffee"]');
-    var email = document.querySelector('[name="emailAddress"]');
+    var emailAddress = document.querySelector('[name="emailAddress"]');
     var size = document.querySelector('[name="size"]:checked');
     var flavor = document.querySelector('[name="flavor"]');
     var strength = document.querySelector('[name="strength"]')
 
-    var orderObject = {coffee: coffee.value, emailAddress: email.value, size: size.value, flavor: flavor.value, strength: strength.value};
-
-    orders.push(orderObject);
+    var orderObject = {coffee: coffee.value, emailAddress: emailAddress.value, size: size.value, flavor: flavor.value, strength: strength.value};
 
     post(orderObject);
 };
 
 getData();
 orderForm.addEventListener('submit', submit);
-
-
