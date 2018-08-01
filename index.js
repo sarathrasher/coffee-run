@@ -21,7 +21,8 @@ var printOrder = function (order) {
     orderList.appendChild(orderListItem);
 
     var removeOrder = function (event) {
-        orderList.removeChild(orderListItem)
+        orderListItem.classList.add('green');
+        setTimeout(function () {orderList.removeChild(orderListItem)}, 2000);
         deleteOrder(order)
     };
 
@@ -61,7 +62,7 @@ var deleteOrder = function (order) {
         success: function(orderObject) {
             console.log(order);
         }
-});
+    });
 };
 
 var deleteByValue = function (value) {
