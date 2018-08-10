@@ -50,29 +50,32 @@ var post = function (orderObject) {
             'Content-Type': 'application/json'
         } 
     });
-    postData.then(res);  
-    orderSubmission =  res.json();
-    orderSubmission.then(function(orderObject) {
-        printOrder(orderSubmission);
-    });  
-}; 
+    postData.then(function(response) {
+        var orderSubmission =  response.json();
+        orderSubmission.then(function(orderObject) {
+        printOrder(orderObject);
+        });  
+    });
+};
 
 
 var deleteOrder = function (order) {
     var emailAddress = order.emailAddress;
     var url = `https://dc-coffeerun.herokuapp.com/api/coffeeorders/${emailAddress}`
-    var deleteOrder = fetch(url, {
+    var deleteSubmission = fetch(url, {
         method: 'DELETE',
         body: JSON.stringify(order), 
         headers: {
             'Content-Type': 'application/json'
         }
     });
-    deleteOrder.then(response)
-    var deletedOrder = response.json();
-    deletedOrder.then(function() {
-        console.log(deletedOrder);
+    deleteSubmission.then(function(response) {
+        var deletedOrder = response.json();
+        deletedOrder.then(function() {
+            console.log(deletedOrder);
+        })
     });
+
 };
 
 var deleteByValue = function (value) {
