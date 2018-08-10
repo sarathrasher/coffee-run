@@ -31,33 +31,47 @@ var printOrder = function (order) {
 
 
 var getData = function () {
-    $.ajax(url, {
-        success: function(coffeeOrders) {
+    var coffeeData = fetch(url)
+    coffeeData.then(function (response) {
+        var jsonCoffeeOrders = response.json();
+        jsonCoffeeOrders.then(function(coffeeOrders) {
             Object.values(coffeeOrders).forEach(function(order) {
                 printOrder(order);
             });
-        }
-
-    })
+        });
+    });
 };
 
 var post = function (orderObject) {
-    $.ajax(url, {
+    var postData = fetch(url, {
         method: 'POST',
-        data: orderObject,
-        success: function() {
-            printOrder(orderObject);
-        },
-        })
-};
+        body: JSON.stringify(orderObject),
+        headers: {
+            'Content-Type': 'application/json'
+        } 
+    });
+    postData.then(res);  
+    orderSubmission =  res.json();
+    orderSubmission.then(function(orderObject) {
+        printOrder(orderSubmission);
+    });  
+}; 
+
 
 var deleteOrder = function (order) {
     var emailAddress = order.emailAddress;
     var url = `https://dc-coffeerun.herokuapp.com/api/coffeeorders/${emailAddress}`
-    $.ajax(url, {
+    var deleteOrder = fetch(url, {
         method: 'DELETE',
-        success: function(orderObject) {
+        body: JSON.stringify(order), 
+        headers: {
+            'Content-Type': 'application/json'
         }
+    });
+    deleteOrder.then(response)
+    var deletedOrder = response.json();
+    deletedOrder.then(function() {
+        console.log(deletedOrder);
     });
 };
 
